@@ -6,6 +6,8 @@ const app = express();
 connection; // Establish the database connection
 app.use(express.json()); // Middleware to parse JSON bodies
 
+
+app.use(cartRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
