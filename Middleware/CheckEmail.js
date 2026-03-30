@@ -2,6 +2,8 @@ import { userModel } from "../DataBase/Models/user.model.js";
 
 
 const CheckEmail = async (req, res, next) => {
+    if (!req.body.email) return next();
+
     let foundedUser = await userModel.findOne({email: req.body.email})
 
     // console.log(req.url);
