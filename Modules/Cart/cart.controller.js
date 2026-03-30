@@ -36,3 +36,13 @@ export const addToCart = async (req, res) => {
     }
     res.json({message: "product added",Cart:cart})
 }
+
+// get cart items
+export const getCartItems = async(req,res)=>{
+    let cart = req.cart
+    if(!cart){
+        return res.json({message:"cart is empty"})
+    }
+
+    res.json({message:"user cart", cart})
+}

@@ -7,6 +7,7 @@ import { verifyToken } from "../../Middleware/verifyToken.js";
 const cartRouter = express.Router();
 cartRouter.use(verifyToken)
 cartRouter.post("/cart", checkProduct, getCart, addToCart);
-
+cartRouter.use(getCart);
+cartRouter.get("/cart", getCartItems);
 
 export default cartRouter;
