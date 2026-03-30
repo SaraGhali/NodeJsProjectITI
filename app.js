@@ -2,7 +2,7 @@ import express from 'express';
 import { connection } from './DataBase/DBconnection.js';
 import userRouter from './Modules/Users/user.route.js';
 import authRouter from './Modules/Auth/auth.route.js';
-
+import cartRouter from './Modules/Cart/cart.routes.js';
 
 const app = express();
 connection; // Establish the database connection
