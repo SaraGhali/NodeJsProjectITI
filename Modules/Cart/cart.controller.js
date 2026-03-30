@@ -16,7 +16,8 @@ export const addToCart = async (req, res) => {
         }],
         totalPrice: product.price * quantity
         }])
-        cart = carts[0]
+        cart = carts[0];
+        return res.status(201).json({message: "product added",cart});
     } else {
         let item = cart.items.find(i => i.product.toString() === product._id.toString())
         if (item) {
@@ -33,16 +34,16 @@ export const addToCart = async (req, res) => {
             return acc + item.price * item.quantity
         }, 0)
 
-        cart = await cartModel.findByIdAndUpdate(cart._id,{items: cart.items,totalPrice},{ new: true })
+        cart = await cartModel.findByIdAndUpdate(cart._id,{items: cart.items,totalPrice},{ new: true });
     }
-    res.json({message: "product added",Cart:cart})
+    res.status(200).json({message: "product added",Cart:cart});
 }
 
 // get cart items
 export const getCartItems = async(req,res)=>{
     let cart = req.cart
     if(!cart){
-        return res.json({message:"cart is empty"})
+        return res.status(404).json({message:"cart is empty"})
     }
 
     res.json({message:"user cart", cart})
@@ -56,7 +57,7 @@ export const removeFromCart = async(req,res)=>{
         return acc + item.price * item.quantity
     },0)
     await cart.save()
-    res.json({message:"item removed",cart})
+    res.status(200).json({message:"item removed",cart})
 }
 
 // update quantity of item in cart
@@ -65,7 +66,7 @@ export const updateQuantity = async(req,res)=>{
 
     let item = cart.items.find(i => i.product.toString() === req.params.productId)
     if(!item){
-        return res.json({message:"product not in cart"})
+        return res.status(404).json({message:"product not in cart"});
     }
 
     item.quantity = req.body.quantity;
@@ -73,15 +74,15 @@ export const updateQuantity = async(req,res)=>{
         return acc + item.price * item.quantity
     },0)
 
-    await cart.save()
-    res.json({message:"quantity updated",cart})
+    await cart.save();
+    res.status(200).json({message:"quantity updated",cart});
 }
 
 // checkout
 export const checkout = async(req,res)=>{
     let cart = req.cart;
     if(!cart){
-        return res.status(400).json({message:"cart is empty"})
+        return res.status(400).json({message:"cart is empty"});
     }
 
     let order = await orderModel.create({
@@ -91,6 +92,11 @@ export const checkout = async(req,res)=>{
         paymentMethod: req.body.paymentMethod,
         status: "pending"
     })
+    
 
-    res.json({message:"order summary", order})
+    cart.items = [];
+    cart.totalPrice = 0;
+    await cart.save();
+
+    res.status(201).json({message:"order summary", order});
 }
