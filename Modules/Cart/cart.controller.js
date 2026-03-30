@@ -46,3 +46,14 @@ export const getCartItems = async(req,res)=>{
 
     res.json({message:"user cart", cart})
 }
+
+// remove item from cart
+export const removeFromCart = async(req,res)=>{
+    let cart = req.cart;
+    cart.items = cart.items.filter(i => i.product.toString() !== req.params.productId)
+    cart.totalPrice = cart.items.reduce((acc,item)=>{
+        return acc + item.price * item.quantity
+    },0)
+    await cart.save()
+    res.json({message:"item removed",cart})
+}
