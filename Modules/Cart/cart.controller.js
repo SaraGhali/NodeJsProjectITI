@@ -1,4 +1,5 @@
 import { cartModel } from "../../DataBase/Models/cart.model";
+import { orderModel } from "../../Database/Models/order.model.js";
 
 export const addToCart = async (req, res) => {
     let cart = req.cart;
@@ -74,4 +75,22 @@ export const updateQuantity = async(req,res)=>{
 
     await cart.save()
     res.json({message:"quantity updated",cart})
+}
+
+// checkout
+export const checkout = async(req,res)=>{
+    let cart = req.cart;
+    if(!cart){
+        return res.status(400).json({message:"cart is empty"})
+    }
+
+    let order = await orderModel.create({
+        user: req.decoded._id,
+        items: cart.items,
+        totalPrice: cart.totalPrice,
+        paymentMethod: req.body.paymentMethod,
+        status: "pending"
+    })
+
+    res.json({message:"order summary", order})
 }

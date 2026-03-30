@@ -11,5 +11,6 @@ cartRouter.use(getCart);
 cartRouter.get("/cart", getCartItems);
 cartRouter.delete("/cart/:productId", removeFromCart);
 cartRouter.put("/cart/:productId", updateQuantity);
+cartRouter.post("/checkout", checkout);
 
 export default cartRouter;
