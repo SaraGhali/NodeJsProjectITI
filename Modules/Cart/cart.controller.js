@@ -57,3 +57,21 @@ export const removeFromCart = async(req,res)=>{
     await cart.save()
     res.json({message:"item removed",cart})
 }
+
+// update quantity of item in cart
+export const updateQuantity = async(req,res)=>{
+    let cart = req.cart;
+
+    let item = cart.items.find(i => i.product.toString() === req.params.productId)
+    if(!item){
+        return res.json({message:"product not in cart"})
+    }
+
+    item.quantity = req.body.quantity;
+    cart.totalPrice = cart.items.reduce((acc,item)=>{
+        return acc + item.price * item.quantity
+    },0)
+
+    await cart.save()
+    res.json({message:"quantity updated",cart})
+}
