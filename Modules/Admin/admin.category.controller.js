@@ -13,7 +13,7 @@ export const adminGetAllCategories = async (req, res) => {
 };
 
 // soft delete category
-export const toggleCategoryStatus = async (req, res) => {
+export const admintoggleCategoryStatus = async (req, res) => {
     try {
         const category = await categoryModel.findById(req.params.id);
         if (!category) {
@@ -29,7 +29,7 @@ export const toggleCategoryStatus = async (req, res) => {
 };
 
 // Add category
-export const addCategory = async (req, res) => {
+export const adminaddCategory = async (req, res) => {
     try {
         const { name, description, image } = req.body;
 
@@ -46,7 +46,7 @@ export const addCategory = async (req, res) => {
 };
 
 // Update category
-export const updateCategory = async (req, res) => {
+export const adminupdateCategory = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, description, image } = req.body;
@@ -68,7 +68,7 @@ export const updateCategory = async (req, res) => {
 };
 
 // Delete category
-export const deleteCategory = async (req, res) => {
+export const admindeleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
 

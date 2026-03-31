@@ -5,7 +5,7 @@ import { allowedTo } from "../../Middleware/allowedTo.js";
 // User Management
 import { getAllUsers, toggleUserStatus, deleteUser, changeUserRole } from "./admin.user.controller.js";
 // Product & Category Management
-import { adminGetAllProducts, toggleProductStatus , updateProduct, addProduct, deleteProduct, adminGetAllCategories, toggleCategoryStatus, updateCategory, addCategory, deleteCategory } from "./admin.product.controller.js";
+import { adminGetAllProducts, admintoggleProductStatus , adminupdateProduct, adminaddProduct, admindeleteProduct, adminGetAllCategories, admintoggleCategoryStatus, adminupdateCategory, adminaddCategory, admindeleteCategory } from "./admin.product.controller.js";
 // Order & Shipping Management
 import { adminGetAllOrders, adminGetOrderById, updateOrderStatus } from "./admin.order.controller.js";
 
@@ -22,18 +22,18 @@ adminRouter.patch("/admin/users/:id/role", changeUserRole);
 // ============ Product Management Routes ============
 
 adminRouter.get("/admin/products", adminGetAllProducts);
-adminRouter.patch("/admin/products/:id/status", toggleProductStatus);
-adminRouter.patch("/admin/products/:id", updateProduct);
-adminRouter.post("/admin/products", addProduct);
-adminRouter.delete("/admin/products/:id", deleteProduct);
+adminRouter.patch("/admin/products/:id/status", admintoggleProductStatus);
+adminRouter.patch("/admin/products/:id", adminupdateProduct);
+adminRouter.post("/admin/products", adminaddProduct);
+adminRouter.delete("/admin/products/:id", admindeleteProduct);
 
 // ============ Category Management Routes ============
 
 adminRouter.get("/admin/categories", adminGetAllCategories);
-adminRouter.patch("/admin/categories/:id/status", toggleCategoryStatus);
-adminRouter.patch("/admin/categories/:id", updateCategory);
-adminRouter.post("/admin/categories", addCategory); 
-adminRouter.delete("/admin/categories/:id", deleteCategory);
+adminRouter.patch("/admin/categories/:id/status", admintoggleCategoryStatus);
+adminRouter.patch("/admin/categories/:id", adminupdateCategory);
+adminRouter.post("/admin/categories", adminaddCategory); 
+adminRouter.delete("/admin/categories/:id", admindeleteCategory);
 
 // ============ Order & Shipping Management Routes ============
 

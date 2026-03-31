@@ -13,7 +13,7 @@ export const adminGetAllProducts = async (req, res) => {
 };
 
 // soft delete product
-export const toggleProductStatus = async (req, res) => {
+export const admintoggleProductStatus = async (req, res) => {
     try {
         const product = await productModel.findById(req.params.id);
         if (!product) {
@@ -29,7 +29,7 @@ export const toggleProductStatus = async (req, res) => {
 };
 
 // Update product
-export const updateProduct = async (req, res) => {
+export const adminupdateProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
@@ -51,7 +51,7 @@ export const updateProduct = async (req, res) => {
 };
 
 // Delete product
-export const deleteProduct = async (req, res) => {
+export const admindeleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -68,7 +68,7 @@ export const deleteProduct = async (req, res) => {
 };
 
 // Add product
-export const addProduct = async (req, res) => {
+export const adminaddProduct = async (req, res) => {
     try {
         const { name, description, price, category, images, stock, seller } = req.body;
 
