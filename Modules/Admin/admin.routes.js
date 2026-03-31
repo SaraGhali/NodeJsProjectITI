@@ -12,7 +12,7 @@ import { adminGetAllOrders, adminGetOrderById, updateOrderStatus } from "./admin
 const adminRouter = express.Router();
 
 // Apply auth + admin-only guard to ALL admin routes
-// adminRouter.use(verifyToken, allowedTo("admin"));
+adminRouter.use(verifyToken, allowedTo("admin"));
 
 adminRouter.get("/admin/users", getAllUsers);
 adminRouter.patch("/admin/users/:id/status", toggleUserStatus);
