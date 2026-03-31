@@ -4,8 +4,9 @@ import { productModel } from "../../DataBase/Models/product.model.js";
 // Add review
 export const addReview = async (req, res) => {
     try {
-        const { product, rating, comment, user } = req.body; // 'user' might come from req.decoded in real app
-        
+        const { product, rating, comment } = req.body;
+        const user = req.decoded._id;
+
         // 1. Check if product exists
         const existingProduct = await productModel.findById(product);
         if (!existingProduct) {

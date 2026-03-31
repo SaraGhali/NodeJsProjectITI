@@ -21,19 +21,20 @@ export const addProduct = async (req, res) => {
     }
 };
 
-// Get all products with search, filter, and optionally pagination/sorting
+// Get all products with search, filter
 export const getAllProducts = async (req, res) => {
     try {
-        const { search, category, minPrice, maxPrice, sort } = req.query;
+        const { search, category, minPrice, maxPrice } = req.query;
 
         let query = {};
 
-        // Search by name or description
+        // Search by name
         if (search) {
-            query.$or = [
-                { name: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ];
+            //query operators :flexible string searching
+            query.name = {
+                $regex: search, // includes the search string anywhere in the name
+                $options: 'i' // i for insensitive-case
+            };
         }
 
         // Filter by category
@@ -52,12 +53,6 @@ export const getAllProducts = async (req, res) => {
         query.isActive = true;
 
         let productsQuery = productModel.find(query).populate('category', 'name image');
-
-        // Sorting
-        if (sort) {
-            // e.g., ?sort=price or ?sort=-price
-            productsQuery = productsQuery.sort(sort);
-        }
 
         const products = await productsQuery;
 
