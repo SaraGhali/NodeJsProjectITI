@@ -10,8 +10,8 @@ app.use(express.json()); // Middleware to parse JSON bodies
 app.use(userRouter);
 app.use(authRouter);
 
-
 app.use(cartRouter);
+app.use(orderRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
