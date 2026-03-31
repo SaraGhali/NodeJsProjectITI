@@ -46,6 +46,15 @@ const userSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Product"
     },
+    // Seller-specific fields
+    storeName: {
+        type: String,
+        trim: true,
+    },
+    earnings: {
+        type: Number,
+        default: 0,
+    },
 }, {
     timestamps: true, // created at, updated at
     versionKey: false // hide __v

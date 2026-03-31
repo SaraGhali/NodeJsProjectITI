@@ -6,6 +6,9 @@ import cartRouter from './Modules/Cart/cart.routes.js';
 import categoryRouter from './Modules/Categories/category.routes.js';
 import productRouter from './Modules/Products/product.routes.js';
 import reviewRouter from './Modules/Reviews/review.routes.js';
+import orderRouter from './Modules/Order/order.routes.js';
+import adminRouter from './Modules/Admin/admin.routes.js';
+import sellerRouter from './Modules/Seller/seller.routes.js';
 
 const app = express();
 connection; // Establish the database connection
@@ -16,6 +19,9 @@ app.use(cartRouter);
 app.use(categoryRouter);
 app.use(productRouter);
 app.use(reviewRouter);
+app.use(orderRouter);
+app.use(adminRouter);
+app.use(sellerRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
