@@ -5,7 +5,8 @@ import { allowedTo } from "../../Middleware/allowedTo.js";
 // User Management
 import { getAllUsers, toggleUserStatus, deleteUser, changeUserRole } from "./admin.user.controller.js";
 // Product & Category Management
-import { adminGetAllProducts, adminToggleProductStatus , adminUpdateProduct, adminAddProduct, adminDeleteProduct, adminGetAllCategories, adminToggleCategoryStatus, adminUpdateCategory, adminAddCategory, adminDeleteCategory } from "./admin.product.controller.js";
+import { adminGetAllProducts, adminToggleProductStatus , adminUpdateProduct, adminAddProduct, adminDeleteProduct } from "./admin.product.controller.js";
+import { adminGetAllCategories, adminToggleCategoryStatus, adminUpdateCategory, adminAddCategory, adminDeleteCategory } from "./admin.category.controller.js";
 // Order & Shipping Management
 import { adminGetAllOrders, adminGetOrderById, updateOrderStatus } from "./admin.order.controller.js";
 
