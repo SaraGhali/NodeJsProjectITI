@@ -5,7 +5,7 @@ import { allowedTo } from "../../Middleware/allowedTo.js";
 // User Management
 import { getAllUsers, toggleUserStatus, deleteUser, changeUserRole } from "./admin.user.controller.js";
 // Product & Category Management
-import { adminGetAllProducts, toggleProductStatus, adminDeleteProduct, adminGetAllCategories, toggleCategoryStatus, adminDeleteCategory } from "./admin.product.controller.js";
+import { adminGetAllProducts, toggleProductStatus , updateProduct, addProduct, deleteProduct, adminGetAllCategories, toggleCategoryStatus, updateCategory, addCategory, deleteCategory } from "./admin.product.controller.js";
 // Order & Shipping Management
 import { adminGetAllOrders, adminGetOrderById, updateOrderStatus } from "./admin.order.controller.js";
 
@@ -23,13 +23,17 @@ adminRouter.patch("/admin/users/:id/role", changeUserRole);
 
 adminRouter.get("/admin/products", adminGetAllProducts);
 adminRouter.patch("/admin/products/:id/status", toggleProductStatus);
-adminRouter.delete("/admin/products/:id", adminDeleteProduct);
+adminRouter.patch("/admin/products/:id", updateProduct);
+adminRouter.post("/admin/products", addProduct);
+adminRouter.delete("/admin/products/:id", deleteProduct);
 
 // ============ Category Management Routes ============
 
 adminRouter.get("/admin/categories", adminGetAllCategories);
 adminRouter.patch("/admin/categories/:id/status", toggleCategoryStatus);
-adminRouter.delete("/admin/categories/:id", adminDeleteCategory);
+adminRouter.patch("/admin/categories/:id", updateCategory);
+adminRouter.post("/admin/categories", addCategory); 
+adminRouter.delete("/admin/categories/:id", deleteCategory);
 
 // ============ Order & Shipping Management Routes ============
 
