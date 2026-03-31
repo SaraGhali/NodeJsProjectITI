@@ -12,7 +12,10 @@ export const trackOrder = async (req,res)=>{
 
 // Get User Orders
 export const getUserOrders = async (req, res) => {
-    let orders = await orderModel.find({ user: req.decoded._id }).populate("items.product");
+    let orders = await orderModel.find({ user: req.decoded._id }).populate("items.product", "name price images");
+    if (!orders.length) {
+        return res.status(200).json({ message: "No orders found" });
+    }
     res.status(200).json({message: "user orders",orders:orders});
     console.log(req.decoded._id);
 };

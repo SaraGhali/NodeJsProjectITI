@@ -1,12 +1,13 @@
 import { cartModel } from "../../DataBase/Models/cart.model.js";
 import { orderModel } from "../../DataBase/Models/order.model.js";
+import sendEmail from "../../Email/email.js";
 
 export const addToCart = async (req, res) => {
     let cart = req.cart;
     let product = req.product;
     let quantity = req.body.quantity;
 
-    if (!cart) {
+    if (!cart || cart.items.length === 0) {
         const carts = await cartModel.insertMany([{
         user:req.decoded._id,
         items: [{
@@ -42,7 +43,7 @@ export const addToCart = async (req, res) => {
 // get cart items
 export const getCartItems = async(req,res)=>{
     let cart = req.cart
-    if(!cart){
+    if(!cart || cart.items.length === 0){
         return res.status(404).json({message:"cart is empty"})
     }
 
@@ -81,7 +82,7 @@ export const updateQuantity = async(req,res)=>{
 // checkout
 export const checkout = async(req,res)=>{
     let cart = req.cart;
-    if(!cart){
+    if(!cart || cart.items.length === 0){
         return res.status(400).json({message:"cart is empty"});
     }
 

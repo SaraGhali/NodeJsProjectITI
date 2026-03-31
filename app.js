@@ -6,6 +6,7 @@ import cartRouter from './Modules/Cart/cart.routes.js';
 import categoryRouter from './Modules/Categories/category.routes.js';
 import productRouter from './Modules/Products/product.routes.js';
 import reviewRouter from './Modules/Reviews/review.routes.js';
+import orderRouter from './Modules/Order/order.routes.js';
 
 const app = express();
 connection; // Establish the database connection
