@@ -98,5 +98,14 @@ export const checkout = async(req,res)=>{
     cart.totalPrice = 0;
     await cart.save();
 
+    sendEmail(
+        req.body.email, 
+        "Order Confirmation",
+        `Your order has been placed successfully. 
+        order details: ${order._id} with total price ${order.totalPrice}.
+        Thank you for shopping with us!`,
+        "order"
+    );
+
     res.status(201).json({message:"order summary", order});
 }

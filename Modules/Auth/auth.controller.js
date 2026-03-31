@@ -6,7 +6,7 @@ import sendEmail from "../../Email/email.js";
 
 const register = (async (req, res) => {
     const registerdUser = await userModel.insertMany(req.body);
-    sendEmail(req.body.email);
+    sendEmail(req.body.email,"Hello", " Thank you for registering with us! Please verify your account", "register");
     registerdUser[0].password = undefined;
     res.status(201).json({ message: "Registered User", data: registerdUser })
 })
