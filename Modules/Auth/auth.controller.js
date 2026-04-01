@@ -18,7 +18,7 @@ const login = (async (req, res) => {
         return res.status(422).json({ message: "invalid Data" });
     }
 
-    if (req.user.isConfirmed == false) {
+    if (req.user.isVerified == false) {
         return res.status(400).json({ message: "Account is not verified" });
     }
     let token = jwt.sign({ _id: req.user._id, email: req.user.email, role: req.user.role }, "iti")

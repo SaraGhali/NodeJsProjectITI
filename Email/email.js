@@ -17,7 +17,7 @@ export default async function sendEmail(email, subject, text, type) {
   let htmlContent;
 
   if (type === "register") {
-    const emailToken = jwt.sign({ email }, "myEmail"); 
+    let emailToken = jwt.sign(email, "iti-node-js-project");
     htmlContent = template(emailToken);
   } 
 
