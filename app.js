@@ -12,7 +12,7 @@ import adminRouter from './Modules/Admin/admin.routes.js';
 const app = express();
 connection; // Establish the database connection
 app.use(express.json()); // Middleware to parse JSON bodies
-// app.use(userRouter);
+app.use(userRouter);
 app.use(authRouter);
 
 app.use(cartRouter);

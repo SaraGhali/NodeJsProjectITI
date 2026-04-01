@@ -1,5 +1,4 @@
 import { productModel } from "../../DataBase/Models/product.model.js";
-import { categoryModel } from "../../DataBase/Models/category.model.js";
 
 // ===================== PRODUCT MANAGEMENT =====================
 
@@ -13,8 +12,8 @@ export const adminGetAllProducts = async (req, res) => {
     }
 };
 
-// Toggle product active status
-export const toggleProductStatus = async (req, res) => {
+// soft delete product
+export const adminToggleProductStatus = async (req, res) => {
     try {
         const product = await productModel.findById(req.params.id);
         if (!product) {
@@ -29,56 +28,62 @@ export const toggleProductStatus = async (req, res) => {
     }
 };
 
-// Admin force-delete a product
-export const adminDeleteProduct = async (req, res) => {
+// Update product
+export const adminUpdateProduct = async (req, res) => {
     try {
-        const product = await productModel.findByIdAndDelete(req.params.id);
+        const { id } = req.params;
+        const updates = req.body;
+
+        const product = await productModel.findByIdAndUpdate(
+            id,
+            updates,
+            { new: true, runValidators: true }
+        );
+
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
-        res.status(200).json({ message: "Product permanently deleted" });
+
+        res.status(200).json({ message: "Product updated successfully", product });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ message: "Error updating product", error: error.message });
     }
 };
 
-// ===================== CATEGORY MANAGEMENT =====================
-
-// Get all categories (admin view)
-export const adminGetAllCategories = async (req, res) => {
+// Delete product
+export const adminDeleteProduct = async (req, res) => {
     try {
-        const categories = await categoryModel.find();
-        res.status(200).json({ message: "All categories", count: categories.length, data: categories });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
-    }
-};
+        const { id } = req.params;
 
-// Toggle category active status
-export const toggleCategoryStatus = async (req, res) => {
-    try {
-        const category = await categoryModel.findById(req.params.id);
-        if (!category) {
-            return res.status(404).json({ message: "Category not found" });
+        const product = await productModel.findByIdAndDelete(id);
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
         }
-        category.isActive = !category.isActive;
-        await category.save();
-        const status = category.isActive ? "activated" : "deactivated";
-        res.status(200).json({ message: `Category has been ${status}`, data: category });
+
+        res.status(200).json({ message: "Product deleted successfully", product });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ message: "Error deleting product", error: error.message });
     }
 };
 
-// Admin force-delete a category
-export const adminDeleteCategory = async (req, res) => {
+// Add product
+export const adminAddProduct = async (req, res) => {
     try {
-        const category = await categoryModel.findByIdAndDelete(req.params.id);
-        if (!category) {
-            return res.status(404).json({ message: "Category not found" });
-        }
-        res.status(200).json({ message: "Category permanently deleted" });
+        const { name, description, price, category, images, stock, seller } = req.body;
+
+        let product = await productModel.create({
+            name,
+            description,
+            price,
+            category,
+            images,
+            stock,
+            seller
+        });
+
+        res.status(201).json({ message: "Product created successfully", product });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ message: "Error adding product", error: error.message });
     }
 };
