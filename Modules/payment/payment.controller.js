@@ -2,7 +2,6 @@ import Stripe from "stripe";
 import { orderModel } from "../../DataBase/Models/order.model.js";
 import { handleError } from "../../Middleware/HandlError.js";
 
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createPayment = handleError(async (req, res) => {
@@ -25,7 +24,7 @@ export const createPayment = handleError(async (req, res) => {
 
     });
 
-    
+
     order.paymentIntentId = paymentIntent.id;
     await order.save();
 
@@ -79,7 +78,7 @@ export const createPaymentWithSavedCard = handleError(async (req, res) => {
 
     });
 
-    
+
     order.status = "paid";
     await order.save();
 
