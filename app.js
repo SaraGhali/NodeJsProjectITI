@@ -7,6 +7,7 @@ import categoryRouter from './Modules/Categories/category.routes.js';
 import productRouter from './Modules/Products/product.routes.js';
 import reviewRouter from './Modules/Reviews/review.routes.js';
 import orderRouter from './Modules/Order/order.routes.js';
+import paymentRouter from './Modules/payment/payment.routes.js';
 import adminRouter from './Modules/Admin/admin.routes.js';
 import sellerRouter from './Modules/Seller/seller.routes.js';
 const app = express();

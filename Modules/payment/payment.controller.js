@@ -1,7 +1,7 @@
 import Stripe from "stripe";
-import { orderModel } from "../../DataBase/Models/order.model";
+import { orderModel } from "../../DataBase/Models/order.model.js";
 
-
+process.loadEnvFile();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createPayment = async (req, res) => {
@@ -24,7 +24,7 @@ export const createPayment = async (req, res) => {
 
     });
 
-    
+
     order.paymentIntentId = paymentIntent.id;
     await order.save();
 
@@ -47,6 +47,16 @@ export const createPaymentWithSavedCard = async (req, res) => {
     }
 
     const { customerEmail, paymentMethodId } = req.body;
+
+    if (paymentMethodId && paymentMethodId.toLowerCase().includes("cash")) {
+        order.paymentMethod = "Cash on Delivery";
+        order.status = "pending";
+        await order.save();
+        return res.status(200).json({
+            message: "order placed successfully with Cash on Delivery",
+            order
+        });
+    }
 
     let customers = await stripe.customers.list({ email: customerEmail });
 
@@ -80,8 +90,9 @@ export const createPaymentWithSavedCard = async (req, res) => {
 
     });
 
-    
-    order.status = "paid";
+
+    order.paymentMethod = "Credit Card";
+    order.status = "confirmed"; // Changed from "paid" to match the schema enum
     await order.save();
 
 
