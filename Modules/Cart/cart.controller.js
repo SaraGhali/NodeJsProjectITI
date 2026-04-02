@@ -8,8 +8,8 @@ export const addToCart = handleError(async (req, res) => {
     let product = req.product;
     let quantity = req.body.quantity;
 
-    if (!cart || cart.items.length === 0) {
-        const carts = await cartModel.insertMany([{
+    if (!cart) {
+        cart = await cartModel.create({
             user: req.decoded._id,
             items: [{
                 product: product._id,
@@ -17,8 +17,8 @@ export const addToCart = handleError(async (req, res) => {
                 price: product.price
             }],
             totalPrice: product.price * quantity
-        }])
-        cart = carts[0];
+        });
+
         return res.status(201).json({ message: "product added", cart });
     } else {
         let item = cart.items.find(i => i.product.toString() === product._id.toString())
@@ -42,10 +42,10 @@ export const addToCart = handleError(async (req, res) => {
 })
 
 // get cart items
-export const getCartItems = handleError( async (req, res) => {
+export const getCartItems = handleError(async (req, res) => {
     let cart = req.cart
-    if(!cart || cart.items.length === 0){
-        return res.status(404).json({message:"cart is empty"})
+    if (!cart || cart.items.length === 0) {
+        return res.status(404).json({ message: "cart is empty" })
     }
 
     res.json({ message: "user cart", cart })
@@ -63,7 +63,7 @@ export const removeFromCart = handleError(async (req, res) => {
 })
 
 // update quantity of item in cart
-export const updateQuantity = handleError( async (req, res) => {
+export const updateQuantity = handleError(async (req, res) => {
     let cart = req.cart;
 
     let item = cart.items.find(i => i.product.toString() === req.params.productId)
@@ -81,10 +81,10 @@ export const updateQuantity = handleError( async (req, res) => {
 })
 
 // checkout
-export const checkout = handleError( async (req, res) => {
+export const checkout = handleError(async (req, res) => {
     let cart = req.cart;
-    if(!cart || cart.items.length === 0){
-        return res.status(400).json({message:"cart is empty"});
+    if (!cart || cart.items.length === 0) {
+        return res.status(400).json({ message: "cart is empty" });
     }
 
     let order = await orderModel.create({
