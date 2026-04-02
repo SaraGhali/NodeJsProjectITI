@@ -1,7 +1,8 @@
 import { orderModel } from "../../DataBase/Models/order.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 // Get all orders (all users)
-export const adminGetAllOrders = async (req, res) => {
+export const adminGetAllOrders = handleError(async (req, res) => {
     try {
         const orders = await orderModel
             .find()
@@ -11,10 +12,10 @@ export const adminGetAllOrders = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Get a single order by ID
-export const adminGetOrderById = async (req, res) => {
+export const adminGetOrderById = handleError(async (req, res) => {
     try {
         const order = await orderModel
             .findById(req.params.orderId)
@@ -27,10 +28,10 @@ export const adminGetOrderById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Update order status (pending -> confirmed -> shipped -> delivered -> cancelled)
-export const updateOrderStatus = async (req, res) => {
+export const updateOrderStatus = handleError(async (req, res) => {
     try {
         const { status } = req.body;
         const allowedStatuses = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
@@ -49,4 +50,4 @@ export const updateOrderStatus = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});

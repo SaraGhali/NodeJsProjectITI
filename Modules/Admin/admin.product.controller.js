@@ -1,19 +1,20 @@
 import { productModel } from "../../DataBase/Models/product.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 // ===================== PRODUCT MANAGEMENT =====================
 
 // Get all products (admin view, including inactive)
-export const adminGetAllProducts = async (req, res) => {
+export const adminGetAllProducts = handleError(async (req, res) => {
     try {
         const products = await productModel.find().populate("category", "name");
         res.status(200).json({ message: "All products", count: products.length, data: products });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // soft delete product
-export const adminToggleProductStatus = async (req, res) => {
+export const adminToggleProductStatus = handleError(async (req, res) => {
     try {
         const product = await productModel.findById(req.params.id);
         if (!product) {
@@ -26,10 +27,10 @@ export const adminToggleProductStatus = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Update product
-export const adminUpdateProduct = async (req, res) => {
+export const adminUpdateProduct = handleError(async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
@@ -48,10 +49,10 @@ export const adminUpdateProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error updating product", error: error.message });
     }
-};
+});
 
 // Delete product
-export const adminDeleteProduct = async (req, res) => {
+export const adminDeleteProduct = handleError(async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -65,10 +66,10 @@ export const adminDeleteProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error deleting product", error: error.message });
     }
-};
+});
 
 // Add product
-export const adminAddProduct = async (req, res) => {
+export const adminAddProduct = handleError(async (req, res) => {
     try {
         const { name, description, price, category, images, stock, seller } = req.body;
 
@@ -86,4 +87,4 @@ export const adminAddProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error adding product", error: error.message });
     }
-};
+});

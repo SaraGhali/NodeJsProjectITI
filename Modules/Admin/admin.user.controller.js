@@ -1,17 +1,18 @@
 import { userModel } from "../../DataBase/Models/user.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 // Get all users (active and inactive)
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = handleError(async (req, res) => {
     try {
         const users = await userModel.find().select("-password");
         res.status(200).json({ message: "All users", count: users.length, data: users });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Approve / Restrict user (toggle isActive) — Soft Delete approach
-export const toggleUserStatus = async (req, res) => {
+export const toggleUserStatus = handleError(async (req, res) => {
     try {
         const user = await userModel.findById(req.params.id);
         if (!user) {
@@ -24,10 +25,10 @@ export const toggleUserStatus = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // delete a user 
-export const deleteUser = async (req, res) => {
+export const deleteUser = handleError(async (req, res) => {
     try {
         const user = await userModel.findByIdAndDelete(req.params.id);
         if (!user) {
@@ -37,10 +38,10 @@ export const deleteUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Change user role (e.g., promote to seller or admin)
-export const changeUserRole = async (req, res) => {
+export const changeUserRole = handleError(async (req, res) => {
     try {
         const { role } = req.body;
         const allowedRoles = ["customer", "seller", "admin"];
@@ -59,4 +60,4 @@ export const changeUserRole = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});

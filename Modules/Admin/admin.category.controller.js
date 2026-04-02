@@ -1,19 +1,20 @@
 import { categoryModel } from "../../DataBase/Models/category.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 // ===================== CATEGORY MANAGEMENT =====================
 
 // Get all categories (admin view)
-export const adminGetAllCategories = async (req, res) => {
+export const adminGetAllCategories =handleError(async (req, res) => {
     try {
         const categories = await categoryModel.find();
         res.status(200).json({ message: "All categories", count: categories.length, data: categories });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // soft delete category
-export const adminToggleCategoryStatus = async (req, res) => {
+export const adminToggleCategoryStatus = handleError(async (req, res) => {
     try {
         const category = await categoryModel.findById(req.params.id);
         if (!category) {
@@ -26,10 +27,10 @@ export const adminToggleCategoryStatus = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Add category
-export const adminAddCategory = async (req, res) => {
+export const adminAddCategory = handleError(async (req, res) => {
     try {
         const { name, description, image } = req.body;
 
@@ -43,10 +44,10 @@ export const adminAddCategory = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error adding category", error: error.message });
     }
-};
+});
 
 // Update category
-export const adminUpdateCategory = async (req, res) => {
+export const adminUpdateCategory = handleError(async (req, res) => {
     try {
         const { id } = req.params;
         const { name, description, image } = req.body;
@@ -65,10 +66,10 @@ export const adminUpdateCategory = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error updating category", error: error.message });
     }
-};
+});
 
 // Delete category
-export const adminDeleteCategory = async (req, res) => {
+export const adminDeleteCategory = handleError(async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -82,4 +83,4 @@ export const adminDeleteCategory = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error deleting category", error: error.message });
     }
-};
+});
