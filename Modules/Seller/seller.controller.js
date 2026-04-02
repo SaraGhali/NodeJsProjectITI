@@ -1,11 +1,12 @@
 import { userModel } from "../../DataBase/Models/user.model.js";
 import { productModel } from "../../DataBase/Models/product.model.js";
 import { orderModel } from "../../DataBase/Models/order.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 // ===================== PROFILE =====================
 
 // Update store profile (storeName, address, etc.)
-export const updateStoreProfile = async (req, res) => {
+export const updateStoreProfile = handleError(async (req, res) => {
     try {
         // Only allow safe fields to be updated here
         const { storeName, address, phone } = req.body;
@@ -19,12 +20,12 @@ export const updateStoreProfile = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // ===================== PRODUCTS =====================
 
 // Add a product — seller field is automatically set from the token
-export const addSellerProduct = async (req, res) => {
+export const addSellerProduct = handleError(async (req, res) => {
     try {
         const product = await productModel.create({
             ...req.body,
@@ -34,10 +35,10 @@ export const addSellerProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Get all products belonging to the logged-in seller
-export const getSellerProducts = async (req, res) => {
+export const getSellerProducts = handleError(async (req, res) => {
     try {
         const products = await productModel
             .find({ seller: req.decoded._id })
@@ -46,10 +47,10 @@ export const getSellerProducts = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Update own product — with ownership check
-export const updateSellerProduct = async (req, res) => {
+export const updateSellerProduct = handleError(async (req, res) => {
     try {
         const product = await productModel.findOne({
             _id: req.params.id,
@@ -73,10 +74,10 @@ export const updateSellerProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // Delete own product — with ownership check
-export const deleteSellerProduct = async (req, res) => {
+export const deleteSellerProduct = handleError(async (req, res) => {
     try {
         const product = await productModel.findOneAndDelete({
             _id: req.params.id,
@@ -91,12 +92,12 @@ export const deleteSellerProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // ===================== ORDERS =====================
 
 // Get orders that contain at least one product belonging to this seller
-export const getSellerOrders = async (req, res) => {
+export const getSellerOrders = handleError(async (req, res) => {
     try {
         // Find all products owned by this seller
         const myProducts = await productModel
@@ -114,12 +115,12 @@ export const getSellerOrders = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});
 
 // ===================== EARNINGS =====================
 
 // Get the logged-in seller's current earnings
-export const getSellerEarnings = async (req, res) => {
+export const getSellerEarnings = handleError(async (req, res) => {
     try {
         const seller = await userModel
             .findById(req.decoded._id)
@@ -129,4 +130,4 @@ export const getSellerEarnings = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
-};
+});

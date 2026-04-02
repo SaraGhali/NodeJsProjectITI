@@ -1,9 +1,10 @@
 import { productModel } from "../../DataBase/Models/product.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 
 
 // Get all products with search, filter
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = handleError(async (req, res) => {
     try {
         const { search, category, minPrice, maxPrice } = req.query;
 
@@ -41,10 +42,10 @@ export const getAllProducts = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error retrieving products", error: error.message });
     }
-};
+});
 
 // Get product by ID
-export const getProductById = async (req, res) => {
+export const getProductById = handleError(async (req, res) => {
     try {
         const product = await productModel.findById(req.params.id).populate('category', 'name').populate('seller', 'name email');
         if (!product) {
@@ -54,4 +55,4 @@ export const getProductById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error retrieving product", error: error.message });
     }
-};
+});

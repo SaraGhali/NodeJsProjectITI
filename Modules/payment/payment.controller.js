@@ -1,10 +1,11 @@
 import Stripe from "stripe";
-import { orderModel } from "../../DataBase/Models/order.model";
+import { orderModel } from "../../DataBase/Models/order.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export const createPayment = async (req, res) => {
+export const createPayment = handleError(async (req, res) => {
 
     let order = await orderModel.findById(req.params.orderId);
 
@@ -32,11 +33,9 @@ export const createPayment = async (req, res) => {
         message: "payment intent created",
         clientSecret: paymentIntent.client_secret
     });
-};
+});
 
-
-
-export const createPaymentWithSavedCard = async (req, res) => {
+export const createPaymentWithSavedCard = handleError(async (req, res) => {
 
     let order = await orderModel.findById(req.params.orderId);
 
@@ -89,4 +88,4 @@ export const createPaymentWithSavedCard = async (req, res) => {
         message: "payment successful",
         paymentIntent
     });
-};
+});

@@ -1,8 +1,9 @@
 import { reviewModel } from "../../DataBase/Models/review.model.js";
 import { productModel } from "../../DataBase/Models/product.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 // Add review
-export const addReview = async (req, res) => {
+export const addReview = handleError(async (req, res) => {
     try {
         const { product, rating, comment } = req.body;
         const user = req.decoded._id;
@@ -38,10 +39,10 @@ export const addReview = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error adding review", error: error.message });
     }
-};
+});
 
 // Get reviews for a specific product
-export const getProductReviews = async (req, res) => {
+export const getProductReviews = handleError(async (req, res) => {
     try {
         const { productId } = req.params;
         const reviews = await reviewModel.find({ product: productId })
@@ -50,10 +51,10 @@ export const getProductReviews = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error retrieving reviews", error: error.message });
     }
-};
+});
 
 // Update review
-export const updateReview = async (req, res) => {
+export const updateReview = handleError(async (req, res) => {
     try {
         const { id } = req.params;
         const { rating, comment } = req.body;
@@ -85,10 +86,10 @@ export const updateReview = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error updating review", error: error.message });
     }
-};
+});
 
 // Delete review
-export const deleteReview = async (req, res) => {
+export const deleteReview = handleError(async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -115,4 +116,4 @@ export const deleteReview = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error deleting review", error: error.message });
     }
-};
+});
