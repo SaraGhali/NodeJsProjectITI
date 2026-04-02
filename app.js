@@ -26,6 +26,10 @@ app.use(orderRouter);
 
 app.use(paymentRouter);
 app.use(sellerRouter);
+
+
+app.use(paymentRouter);
+app.use(sellerRouter);
 app.use(adminRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
