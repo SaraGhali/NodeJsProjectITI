@@ -1,8 +1,9 @@
 import { cartModel } from "../../DataBase/Models/cart.model.js";
 import { orderModel } from "../../DataBase/Models/order.model.js";
 import sendEmail from "../../Email/email.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
-export const addToCart = async (req, res) => {
+export const addToCart = handleError(async (req, res) => {
     let cart = req.cart;
     let product = req.product;
     let quantity = req.body.quantity;
@@ -38,20 +39,20 @@ export const addToCart = async (req, res) => {
         cart = await cartModel.findByIdAndUpdate(cart._id, { items: cart.items, totalPrice }, { new: true });
     }
     res.status(200).json({ message: "product added", Cart: cart });
-}
+})
 
 // get cart items
-export const getCartItems = async (req, res) => {
+export const getCartItems = handleError( async (req, res) => {
     let cart = req.cart
     if(!cart || cart.items.length === 0){
         return res.status(404).json({message:"cart is empty"})
     }
 
     res.json({ message: "user cart", cart })
-}
+})
 
 // remove item from cart
-export const removeFromCart = async (req, res) => {
+export const removeFromCart = handleError(async (req, res) => {
     let cart = req.cart;
     cart.items = cart.items.filter(i => i.product.toString() !== req.params.productId)
     cart.totalPrice = cart.items.reduce((acc, item) => {
@@ -59,10 +60,10 @@ export const removeFromCart = async (req, res) => {
     }, 0)
     await cart.save()
     res.status(200).json({ message: "item removed", cart })
-}
+})
 
 // update quantity of item in cart
-export const updateQuantity = async (req, res) => {
+export const updateQuantity = handleError( async (req, res) => {
     let cart = req.cart;
 
     let item = cart.items.find(i => i.product.toString() === req.params.productId)
@@ -77,10 +78,10 @@ export const updateQuantity = async (req, res) => {
 
     await cart.save();
     res.status(200).json({ message: "quantity updated", cart });
-}
+})
 
 // checkout
-export const checkout = async (req, res) => {
+export const checkout = handleError( async (req, res) => {
     let cart = req.cart;
     if(!cart || cart.items.length === 0){
         return res.status(400).json({message:"cart is empty"});
@@ -93,7 +94,6 @@ export const checkout = async (req, res) => {
         paymentMethod: req.body.paymentMethod,
         status: "pending"
     })
-
 
     cart.items = [];
     cart.totalPrice = 0;
@@ -109,4 +109,4 @@ export const checkout = async (req, res) => {
     );
 
     res.status(201).json({ message: "order summary", order });
-}
+})

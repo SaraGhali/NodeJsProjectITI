@@ -1,13 +1,14 @@
 
 import { userModel } from "../../DataBase/Models/user.model.js";
+import { handleError } from "../../Middleware/HandlError.js";
 
 
-const getAllUsers = async (req, res) => {
+const getAllUsers =handleError( async (req, res) => {
     let users = await userModel.find()
     res.json({ message: "list Users", data: users })
-}
+})
 
-const updateUser = async (req, res) => {
+const updateUser =handleError( async (req, res) => {
     if (req.params.id !== req.decoded._id) {
         return res.status(403).json({ message: "You are not authorized to update this user's data. You can only update your own data." });
     }
@@ -23,17 +24,15 @@ const updateUser = async (req, res) => {
         return res.status(404).json({ message: "user not found" })
     }
     res.json({ message: "updated user", data: updatedUser })
-}
+})
 
-const deleteUser = async (req, res) => {
+const deleteUser =handleError(async (req, res) => {
     const id = req.params.id
     let deletedUser = await userModel.findByIdAndDelete(id)
     if (deletedUser == null) {
         return res.status(404).json({ message: "user not found" })
     }
     res.json({ message: "deleted User" })
-}
-
-
+})
 
 export { getAllUsers, updateUser, deleteUser }
