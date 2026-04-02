@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { connection } from './DataBase/DBconnection.js';
 import userRouter from './Modules/Users/user.route.js';
@@ -8,7 +9,8 @@ import productRouter from './Modules/Products/product.routes.js';
 import reviewRouter from './Modules/Reviews/review.routes.js';
 import orderRouter from './Modules/Order/order.routes.js';
 import adminRouter from './Modules/Admin/admin.routes.js';
-
+import sellerRouter from './Modules/Seller/seller.routes.js';
+import paymentRouter from './Modules/Payment/payment.routes.js';
 const app = express();
 connection; // Establish the database connection
 app.use(express.json()); // Middleware to parse JSON bodies
@@ -20,6 +22,10 @@ app.use(productRouter);
 app.use(reviewRouter);
 app.use(cartRouter);
 app.use(orderRouter);
+
+
+app.use(paymentRouter);
+app.use(sellerRouter);
 app.use(adminRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
