@@ -54,6 +54,13 @@ export const getCartItems = handleError(async (req, res) => {
 // remove item from cart
 export const removeFromCart = handleError(async (req, res) => {
     let cart = req.cart;
+    if (!cart || cart.items.length === 0) {
+        return res.status(404).json({ message: "cart is empty" })
+    }
+    let item = cart.items.find(i => i.product.toString() === req.params.productId)
+    if (!item) {
+        return res.status(404).json({ message: "product not in cart" })
+    }
     cart.items = cart.items.filter(i => i.product.toString() !== req.params.productId)
     cart.totalPrice = cart.items.reduce((acc, item) => {
         return acc + item.price * item.quantity
