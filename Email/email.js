@@ -8,8 +8,8 @@ export default async function sendEmail(email, subject, text, type) {
     service: "gmail",
     secure: false, // Use true for port 465, false for port 587
     auth: {
-      user: "sara29ghali@gmail.com",
-      pass: "pguc ezzp wnqj wxll", // gmail --> application --> password 
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
